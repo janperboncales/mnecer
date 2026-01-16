@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CertificateData, RecommendationType } from '../types';
-import { Download, Edit2, Plus, FileImage, FileText, Loader2, Check } from 'lucide-react';
+import { Download, Edit2, Plus, FileImage, FileText, Loader2, Check, Printer } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
@@ -79,6 +79,10 @@ const CertificateResult: React.FC<Props> = ({ data, onEdit, onNew }) => {
     }
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   const isChecked = (type: RecommendationType) => data.recommendations.includes(type);
   
   const CheckBox = ({ checked }: { checked: boolean }) => (
@@ -110,7 +114,7 @@ const CertificateResult: React.FC<Props> = ({ data, onEdit, onNew }) => {
   return (
     <div className="w-full max-w-[210mm] mx-auto animate-fade-in-up mb-12">
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-8">
+      <div className="flex flex-col sm:flex-row gap-3 mb-8 no-print">
         <button 
           onClick={() => generateFile('png')}
           disabled={isGenerating}
@@ -127,9 +131,17 @@ const CertificateResult: React.FC<Props> = ({ data, onEdit, onNew }) => {
            {isGenerating ? <Loader2 size={18} className="animate-spin" /> : <FileText size={18} />}
           <span>Save as PDF</span>
         </button>
+        <button 
+          onClick={handlePrint}
+          disabled={isGenerating}
+          className="flex-1 bg-gray-800 hover:bg-black text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+           <Printer size={18} />
+          <span>Print A4</span>
+        </button>
       </div>
 
-      <div className="flex gap-3 mb-8">
+      <div className="flex gap-3 mb-8 no-print">
         <button 
           onClick={onEdit}
           disabled={isGenerating}
@@ -147,7 +159,7 @@ const CertificateResult: React.FC<Props> = ({ data, onEdit, onNew }) => {
       </div>
 
       {/* Certificate Container Wrapper */}
-      <div className="shadow-2xl">
+      <div className="shadow-2xl print:shadow-none">
         {/* Certificate Document (A4 Size: 210mm x 297mm) */}
         <div id="certificate-content" className="bg-white p-12 md:p-16 text-black relative min-h-[297mm] w-full mx-auto overflow-hidden flex flex-col box-border">
           
