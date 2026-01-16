@@ -20,6 +20,51 @@
       .font-signature-2 {
         font-family: 'Mrs Saint Delafield', cursive;
       }
+
+      @media print {
+        @page {
+          size: A4 portrait;
+          margin: 0;
+        }
+        body {
+          background-color: white;
+          margin: 0;
+          padding: 0;
+        }
+        /* Hide everything by default using visibility to keep layout but hide ink */
+        body * {
+          visibility: hidden;
+        }
+        /* Explicitly show the certificate content and its children */
+        #certificate-content, #certificate-content * {
+          visibility: visible;
+        }
+        /* Position the certificate to fill the page */
+        #certificate-content {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 210mm; /* A4 Width */
+          min-height: 297mm; /* A4 Height */
+          margin: 0 !important;
+          padding-top: 40px !important; /* Adjust padding for print margins if needed */
+          padding-left: 40px !important;
+          padding-right: 40px !important;
+          box-shadow: none !important;
+          background-color: white !important;
+          z-index: 9999;
+          overflow: visible !important;
+        }
+        /* Ensure colors are exact */
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        /* Hide buttons and header specifically to be safe */
+        header, button, .no-print {
+          display: none !important;
+        }
+      }
     </style>
   <script type="importmap">
 {
@@ -34,10 +79,8 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+  </body>
 </html>
